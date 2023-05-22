@@ -78,4 +78,11 @@ public class FloydWarshall {
             }
         }
     }
+
+    
+    //(Ciudad ciudad1, Ciudad ciudad2, int lazo)
+    public void Agregar_lazo (Ciudad ciudad1, Ciudad ciudad2, int lazo){
+
+    }
+
 }
