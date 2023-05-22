@@ -1,9 +1,4 @@
 /**
- *
- */
-package edu.uvg.graphs;
-
-/**
  * @author MAAG
  *
  */
