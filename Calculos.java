@@ -1,4 +1,8 @@
 public class Calculos {
+    FloydWarshall grafoNormal;
+    Calculos(){
+        grafoNormal = readFile.guardarDatos();
+    }
     public void mostrar_ruta(){
 
     }

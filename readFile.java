@@ -45,7 +45,7 @@ public class readFile {
         return total;
     }
 
-    public static FloydWarshall guardarDatos(ArrayList<String> informacion) {
+    public static FloydWarshall guardarDatos() {
         return null;
     }
 }
