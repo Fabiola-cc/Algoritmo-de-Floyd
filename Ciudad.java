@@ -1,6 +1,11 @@
 public class Ciudad {
-    String nombre;
-    String clima_actual;
+    private String nombre;
+    private String clima_actual;
+
+    Ciudad(String _nombre, String _clima) {
+        nombre = _nombre;
+        clima_actual = _clima;
+    }
 
     public String getNombre() {
         return nombre;

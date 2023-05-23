@@ -52,6 +52,7 @@ public class readFile {
     static ArrayList<String> total_ciudades = new ArrayList<>();
     static ArrayList<String> ciudades = new ArrayList<>();
     static ArrayList<String> resultList = new ArrayList<>();
+    static ArrayList<Ciudad> cities = new ArrayList<>();
 
     private static void datos_de_ciudades() {
         total_ciudades = _readfile("logistica.txt");
@@ -76,6 +77,9 @@ public class readFile {
             }
         }
 
+        for (String nombre : resultList) {
+            cities.add(new Ciudad(nombre, "normal"));
+        }
     }
 
     static ArrayList<List<String>> lista_tiempoNormal = new ArrayList<>();
