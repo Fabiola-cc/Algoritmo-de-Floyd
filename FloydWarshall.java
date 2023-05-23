@@ -9,7 +9,7 @@ public class FloydWarshall {
     private String[] vertices;
     private int SIZE;
 
-    public FloydWarshall(int [][]_distancias, String[][] _recorridos, int matriz_size) {
+    public FloydWarshall(int[][] _distancias, String[][] _recorridos, int matriz_size) {
         SIZE = matriz_size;
         distancias = _distancias;
         recorridos = _recorridos;
@@ -62,7 +62,7 @@ public class FloydWarshall {
     }
 
     public void CalcularRutas() {
-        for (int i = 0; i < SIZE; i++) { //Que fila y que columna trabajo
+        for (int i = 0; i < SIZE; i++) { // Que fila y que columna trabajo
             for (int j = 0; j < SIZE; j++) {
                 for (int k = 0; k < SIZE; k++) {
 
@@ -77,12 +77,6 @@ public class FloydWarshall {
                 }
             }
         }
-    }
-
-    
-    //(Ciudad ciudad1, Ciudad ciudad2, int lazo)
-    public void Agregar_lazo (Ciudad ciudad1, Ciudad ciudad2, int lazo){
-
     }
 
 }
