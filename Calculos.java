@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Calculos {
     FloydWarshall grafoNormal;
@@ -16,11 +15,99 @@ public class Calculos {
     }
 
     public void mostrar_ruta(String ciudadOrigen, String ciudadDestino) {
-        String clima = "";
-        int pesoRuta = 0;
-        FloydWarshall temporalGrafo = new FloydWarshall(null, null, 0);
+        FloydWarshall temporalGrafo = encontrar_grafo_a_utilizar(ciudadOrigen);
+        int pesoRuta = 0; // Guarda el dato obtenido como ruta más corta
         ArrayList<String> ciudades_intermedias = new ArrayList<>();
-        for (Ciudad c : readFile.cities) {
+        int posicion_fila = readFile.resultList.indexOf(ciudadOrigen);
+        int posicion_columna = readFile.resultList.indexOf(ciudadDestino);
+
+        pesoRuta = temporalGrafo.getDistancias()[posicion_fila][posicion_columna];
+        boolean continuar = true;
+        int pos = posicion_columna;
+        while (continuar && pos >= 0) {
+            if (!temporalGrafo.getRecorridos()[posicion_fila][pos].equalsIgnoreCase(ciudadDestino)) {// ARREGLAR
+                ciudades_intermedias.add(temporalGrafo.getRecorridos()[posicion_fila][pos]);
+                pos--;
+            } else {
+                continuar = false;
+            }
+        }
+
+        System.out.println("El peso de la ruta es: " + pesoRuta);
+        if (!ciudades_intermedias.isEmpty()) {
+            ciudades_intermedias.add(0, ciudadOrigen);
+            System.out.print("Pasa por las ciudades de: ");
+            for (String string : ciudades_intermedias) {
+                System.out.print(string + "\t");
+            }
+        } else {
+            System.out.println("La ruta va directamente de " + ciudadOrigen + " a " + ciudadDestino);
+        }
+
+    }
+
+    public void calcular_centro() {
+        ArrayList<Integer> excentricidades = new ArrayList<>();
+        int excentricidad_mínima = 10000;
+
+        for (int i = 0; i < grafoNormal.getDistancias().length; i++) {
+            for (Integer value : grafoNormal.getDistancias()[i]) {
+                if (value < excentricidad_mínima && value != 0) {
+                    excentricidad_mínima = value; // Actualizamos el valor del menor si encontramos un número más
+                                                  // pequeño
+                }
+            }
+            excentricidades.add(excentricidad_mínima);
+            excentricidad_mínima = 10000;
+        }
+
+        int excentricidad_centro = 10000;
+        for (Integer value : excentricidades) {
+            if (value < excentricidad_centro) {
+                excentricidad_centro = value; // Actualizamos el valor del menor si encontramos un número más
+                                              // pequeño
+            }
+        }
+
+        for (int i = 0; i < grafoNormal.getDistancias().length; i++) {
+
+        }
+    }
+
+    public void Interrupcion(String ciudadOrigen, String ciudadDestino, String clima, int cambio) {
+        int posicion_fila = readFile.resultList.indexOf(ciudadOrigen);
+        int posicion_columna = readFile.resultList.indexOf(ciudadDestino);
+        Cambiar_clima(ciudadOrigen, clima);
+        FloydWarshall porCambiar = encontrar_grafo_a_utilizar(ciudadOrigen);
+
+        porCambiar.getDistancias()[posicion_fila][posicion_columna] = cambio;
+
+    }
+
+    public void Agregar_lazo(String ciudadOrigen, String ciudadDestino, int normal, int lluvia, int nieve,
+            int tormenta) {
+        int posicion_fila = readFile.resultList.indexOf(ciudadOrigen);
+        int posicion_columna = readFile.resultList.indexOf(ciudadDestino);
+        grafoNormal.getDistancias()[posicion_fila][posicion_columna] = normal;
+        grafoLluvia.getDistancias()[posicion_fila][posicion_columna] = lluvia;
+        grafoNieve.getDistancias()[posicion_fila][posicion_columna] = nieve;
+        grafoTormenta.getDistancias()[posicion_fila][posicion_columna] = tormenta;
+
+    }
+
+    public void Cambiar_clima(String Ciudad_a_Cambiar, String nuevoClima) {
+        for (Ciudad c : readFile.cities) { // Buscar el dato de clima para utilizar
+            if (c.getNombre().equalsIgnoreCase(Ciudad_a_Cambiar)) {
+                c.setClima_actual(nuevoClima);
+            }
+        }
+    }
+
+    public FloydWarshall encontrar_grafo_a_utilizar(String ciudadOrigen) {
+        String clima = "";
+        FloydWarshall temporalGrafo = new FloydWarshall(null, null, 0);
+
+        for (Ciudad c : readFile.cities) { // Buscar el dato de clima para utilizar
             if (c.getNombre().equalsIgnoreCase(ciudadOrigen)) {
                 clima = c.getClima_actual();
             }
@@ -35,72 +122,9 @@ public class Calculos {
         } else if (clima.equalsIgnoreCase("tormenta")) {
             temporalGrafo = grafoTormenta;
         }
+
         temporalGrafo.CalcularRutas();
-        int posicion_fila = readFile.resultList.indexOf(ciudadOrigen);
-        int posicion_columna = readFile.resultList.indexOf(ciudadDestino);
-
-        pesoRuta = temporalGrafo.getDistancias()[posicion_fila][posicion_columna];
-
-        for (int i = 0; i < temporalGrafo.getRecorridos().length; i++) {
-            boolean continuar = true;
-            int pos = posicion_columna;
-            while (continuar || pos == i) {
-                if (!temporalGrafo.getRecorridos()[posicion_fila][pos].equalsIgnoreCase(ciudadDestino)) {// ARREGLAR
-                    ciudades_intermedias.add(temporalGrafo.getRecorridos()[posicion_fila][pos]);
-                    pos--;
-                } else {
-                    continuar = false;
-                }
-            }
-
-        }
-
-        if (!ciudades_intermedias.isEmpty()) {
-            ciudades_intermedias.add(0, ciudadOrigen);
-            System.out.println("El peso de la ruta es: " + pesoRuta);
-            System.out.print("Pasa, en orden, por las ciudades de: ");
-            for (String string : ciudades_intermedias) {
-                System.out.print(string + "\t");
-            }
-        } else {
-            System.out.println("No existe una ruta entre estas ciudades");
-        }
-
-    }
-
-    public void calcular_centro() {
-
-    }
-
-    public void modificar_grafo() {
-
-    }
-
-    public void Interrupcion() {
-
-    }
-
-    public void Agregar_lazo() {
-
-    }
-
-    public void Cambiar_clima() {
-
-    }
-
-    public int[] calcular_posicion(ArrayList<String> lista_a_usar) {
-        int Matrix_size = readFile.resultList.size();
-        int posicion_fila = 0;
-        int posicion_columna = 0;
-        // Dirección para grafo con tiempo normal
-        for (String ciudades : lista_a_usar) { // Por cada listado que indica una dirección
-            if (ciudades.equalsIgnoreCase(ciudades)) {
-
-            }
-
-        }
-        int[] temp = { posicion_fila, posicion_columna };
-        return temp;
+        return temporalGrafo;
     }
 
 }
