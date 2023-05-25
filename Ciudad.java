@@ -1,3 +1,6 @@
+/*
+ * Clase para mantener el control de los climas en las diversas ciudades dadas
+ */
 public class Ciudad {
     private String nombre;
     private String clima_actual;

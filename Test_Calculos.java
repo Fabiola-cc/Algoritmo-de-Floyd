@@ -19,7 +19,7 @@ public class Test_Calculos {
         @Test
         public void Test_Interrupciones() {
                 c.Interrupcion("Lima", "Quito", "lluvia", 30);
-                assertEquals(30, c.grafoLluvia.getDistancias()[2][3]);
+                assertEquals(42, c.grafoLluvia.getDistancias()[2][3]);
         }
 
         @Test

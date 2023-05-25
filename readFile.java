@@ -33,9 +33,9 @@ public class readFile {
 
             while (myReader.hasNextLine()) {
 
-                data = myReader.nextLine();
-                String[] splittedData = data.split(" ");
-                for (String word : splittedData) {
+                data = myReader.nextLine(); // Línea de texto actual
+                String[] splittedData = data.split(" "); // Separa las palabras
+                for (String word : splittedData) { // Guarda cada palabra en el array dado
                     total.add(word);
                 }
 
@@ -54,8 +54,11 @@ public class readFile {
     static ArrayList<String> resultList = new ArrayList<>();
     static ArrayList<Ciudad> cities = new ArrayList<>();
 
+    /**
+     * 
+     */
     private static void datos_de_ciudades() {
-        total_ciudades = _readfile("C:\\Users\\Fabi\\Documents\\GitHub\\Algoritmo-de-Floyd\\logistica.txt");
+        total_ciudades = _readfile("logistica.txt");
         int vueltas = total_ciudades.size() / 6;
         int cambios = 0;
         while (vueltas != 0) {
@@ -87,6 +90,9 @@ public class readFile {
     static ArrayList<List<String>> lista_tiempoNieve = new ArrayList<>();
     static ArrayList<List<String>> lista_tiempoTormenta = new ArrayList<>();
 
+    /**
+     * 
+     */
     private static void datos_de_lazos() {
         int vueltas = total_ciudades.size() / 6;
         int cambios = 0;
@@ -109,10 +115,17 @@ public class readFile {
         }
     }
 
+    /**
+     * Permite tomar los datos del archivo y guardarlos según se requiere
+     * 
+     * @return Array con los diversos 'grafos' creados
+     */
     public static ArrayList<FloydWarshall> guardarDatos() {
         datos_de_ciudades();
         datos_de_lazos();
         int Matrix_size = resultList.size();
+        // Hace uso de 'darValoresA_recorrido' por cada clima para guardar los datos de
+        // distancias
         int[][] dNormal = darValoresA_recorrido(lista_tiempoNormal, Matrix_size);
         int[][] dLluvia = darValoresA_recorrido(lista_tiempoLluvia, Matrix_size);
         int[][] dNieve = darValoresA_recorrido(lista_tiempoNieve, Matrix_size);
@@ -120,16 +133,19 @@ public class readFile {
         String[][] recorridos = new String[Matrix_size][Matrix_size];
 
         for (int i = 0; i < Matrix_size; i++) { // Creación de matriz de recorridos inicial
-            for (int j = 0; j < Matrix_size; j++) {
+            for (int j = 0; j < Matrix_size; j++) { // Guarda en cada columna el nombre de la ciudad representativa de
+                                                    // esa columna
                 recorridos[i][j] = resultList.get(j);
             }
         }
 
+        // Crea objetos de tipo FloydWarshall para tener los registros
         FloydWarshall grafoNormal = new FloydWarshall(dNormal, recorridos, Matrix_size);
         FloydWarshall grafolluvia = new FloydWarshall(dLluvia, recorridos, Matrix_size);
         FloydWarshall grafoNieve = new FloydWarshall(dNieve, recorridos, Matrix_size);
         FloydWarshall grafoTormenta = new FloydWarshall(dTormenta, recorridos, Matrix_size);
 
+        // Guarda cada objeto en un array para retornarlo
         ArrayList<FloydWarshall> result = new ArrayList<>();
         result.add(grafoNormal);
         result.add(grafolluvia);
@@ -138,13 +154,20 @@ public class readFile {
         return result;
     }
 
+    /**
+     * Permite ubicar los datos listados dentro de la matriz de distancia del grafo
+     * 
+     * @param lista_a_usar
+     * @param Matrix_size  cantidad de vértices existentes
+     * @return
+     */
     static int[][] darValoresA_recorrido(ArrayList<List<String>> lista_a_usar, int Matrix_size) {
         int[][] results = new int[Matrix_size][Matrix_size];
-        // Dirección para grafo con tiempo normal
+        // Dirección para grafo
         for (List<String> lista : lista_a_usar) { // Por cada listado que indica una dirección
             int posicion_fila = 0;
             int posicion_columna = 0;
-            for (int j = 0; j < Matrix_size; j++) {
+            for (int j = 0; j < Matrix_size; j++) { // Guardar el dato en la posición exacta de la matriz
                 if (lista.get(0).equals(resultList.get(j))) {
                     posicion_fila = j;
                 }
