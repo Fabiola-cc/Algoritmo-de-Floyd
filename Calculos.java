@@ -46,13 +46,14 @@ public class Calculos {
 
     }
 
-    public void calcular_centro(FloydWarshall grafo_a_usar) {
+    public ArrayList<String> calcular_centro(FloydWarshall grafo_a_usar) {
+        grafo_a_usar.CalcularRutas();
         ArrayList<int[]> excentricidades = new ArrayList<>();
-        int excentricidad_mínima = 10000;
+        int excentricidad_mínima = 1000000;
 
         for (int i = 0; i < grafo_a_usar.getDistancias().length; i++) {
             int[] datos_excentricidad = new int[3];
-            for (int j = 0; i < grafo_a_usar.getDistancias()[i].length; j++) {
+            for (int j = 0; j < grafo_a_usar.getDistancias()[i].length; j++) {
                 int value = grafo_a_usar.getDistancias()[i][j];
                 if (value < excentricidad_mínima && value != 0) {
                     excentricidad_mínima = value; // Actualizamos el valor del menor si encontramos un número más
@@ -63,20 +64,38 @@ public class Calculos {
                 }
             }
             excentricidades.add(datos_excentricidad);
-            excentricidad_mínima = 10000;
+            excentricidad_mínima = 1000000;
         }
 
-        int[] excentricidad_centro = { 10000, 0, 0 };
+        ArrayList<int[]> excentricidad_centro = new ArrayList<>();
         for (int[] value : excentricidades) {
-            if (value[0] < excentricidad_centro[0]) {
-                excentricidad_centro = value; // Actualizamos el valor del menor si encontramos un número más
-                                              // pequeño
+            if (excentricidad_centro.isEmpty()) {
+                excentricidad_centro.add(value);
+            } else {
+                for (int[] is : excentricidad_centro) {
+                    if (value[0] <= is[0]) {
+                        if (value[0] < is[0]) {
+                            excentricidad_centro.remove(is);
+                        }
+                        excentricidad_centro.add(value); // Actualizamos el valor del menor si encontramos un número más
+                                                         // pequeño
+                        break;
+                    }
+                }
             }
         }
 
-        System.out.print("La ciudad en el centro del grafo es: ");
-        readFile.resultList.get(excentricidad_centro[1]);
+        System.out.print("Ciudad(es) en el centro del grafo: ");
+        ArrayList<String> central_cities = new ArrayList<>();
+        for (int[] is : excentricidad_centro) {
+            System.out.print(readFile.resultList.get(is[1]));
+            central_cities.add(readFile.resultList.get(is[1]));
+            if (excentricidad_centro.indexOf(is) != excentricidad_centro.size() - 1) {
+                System.out.print(", ");
+            }
 
+        }
+        return central_cities;
     }
 
     public void Interrupcion(String ciudadOrigen, String ciudadDestino, String clima, int cambio) {

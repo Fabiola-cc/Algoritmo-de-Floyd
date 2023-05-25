@@ -55,7 +55,7 @@ public class readFile {
     static ArrayList<Ciudad> cities = new ArrayList<>();
 
     private static void datos_de_ciudades() {
-        total_ciudades = _readfile("logistica.txt");
+        total_ciudades = _readfile("C:\\Users\\Fabi\\Documents\\GitHub\\Algoritmo-de-Floyd\\logistica.txt");
         int vueltas = total_ciudades.size() / 6;
         int cambios = 0;
         while (vueltas != 0) {
