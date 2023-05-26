@@ -75,74 +75,8 @@ public class Calculos {
     }
 
     /**
-     * Calcula el centro del grafo especificado, haciendo uso de los datos de
-     * excentricidades
-     * 
-     * @param grafo_a_usar Es necesario especificar el clima del grafo para el cual
-     *                     se quiere el centro.
-     * @return arrayList<String> principalmente usado para pruebas unitarias
-     */
-    public ArrayList<String> calcular_centro(FloydWarshall grafo_a_usar) {
-        grafo_a_usar.CalcularRutas(); // Asegura que las rutas registradas sean las menores
-        ArrayList<int[]> excentricidades = new ArrayList<>(); // Guarda los datos de excentricidades de cada vértice y
-                                                              // la ciudad de la que se habla
-        int excentricidad_mínima = 1000000;
-
-        // Compara los datos en distancias para cada vértice para conocer sus
-        // excentricidades
-        for (int i = 0; i < grafo_a_usar.getDistancias().length; i++) {
-            int[] datos_excentricidad = new int[3];
-            for (int j = 0; j < grafo_a_usar.getDistancias()[i].length; j++) {
-                int value = grafo_a_usar.getDistancias()[i][j]; // Valor actual en la posición de matriz
-                if (value < excentricidad_mínima && value != 0) {
-                    excentricidad_mínima = value; // Actualizamos el valor del menor si encontramos un número más
-                                                  // pequeño
-                    datos_excentricidad[0] = excentricidad_mínima; // Dato mínimo obtenido
-                    datos_excentricidad[1] = i; // Ciudad de donde va
-                    datos_excentricidad[2] = j; // Ciudad a donde llega
-                }
-            }
-            excentricidades.add(datos_excentricidad);
-            excentricidad_mínima = 1000000;
-        }
-
-        ArrayList<int[]> excentricidad_centro = new ArrayList<>(); // Guarda todas las ciudades con un valor igual de
-                                                                   // excentricidad, relacionadas al centro
-        for (int[] value : excentricidades) {
-            if (excentricidad_centro.isEmpty()) {
-                excentricidad_centro.add(value); // Agrega un dato al inicio del ciclo
-            } else {
-                for (int[] is : excentricidad_centro) { // Revisa cada dato dento del array de excentricidades
-                                                        // consideradas
-                    if (value[0] <= is[0]) { // Si los datos son iguales se guardan ambos
-                        if (value[0] < is[0]) { // Si el valor de 'value' es menor, se elimina el actual guardado
-                            excentricidad_centro.remove(is);
-                        }
-                        excentricidad_centro.add(value); // Actualizamos el valor del menor si encontramos un número más
-                                                         // pequeño
-                        break;
-                    }
-                }
-            }
-        }
-
-        System.out.print("Ciudad(es) en el centro del grafo: ");
-        ArrayList<String> central_cities = new ArrayList<>();
-        for (int[] is : excentricidad_centro) { // Imprime el nombre de cada ciudad céntrica
-            System.out.print(readFile.resultList.get(is[1]));
-            central_cities.add(readFile.resultList.get(is[1])); // Guarda el nombre en array para pruebas
-            if (excentricidad_centro.indexOf(is) != excentricidad_centro.size() - 1) { // añade una coma entre ciudades,
-                                                                                       // sin hacerlo en la última
-                System.out.print(", ");
-            }
-
-        }
-        return central_cities;
-    }
-
-    /**
      * Registra interrupciones, cambios en el lazo, de una ciudad a otra
-     * 
+     *
      * @param ciudadOrigen
      * @param ciudadDestino
      * @param clima         ¿en qué clima está ocurriendo la interrupción?
@@ -158,6 +92,72 @@ public class Calculos {
 
         porCambiar.getDistancias()[posicion_fila][posicion_columna] += aumento; // Cambia el dato de viaje registrado
 
+    }
+
+    /**
+     * Calcula el centro del grafo especificado, haciendo uso de los datos de
+     * excentricidades
+     *
+     * @param grafo_a_usar Es necesario especificar el clima del grafo para el cual
+     *                     se quiere el centro.
+     * @return arrayList<String> principalmente usado para pruebas unitarias
+     */
+    public ArrayList<String> calcular_centro(FloydWarshall grafo_a_usar) {
+        grafo_a_usar.CalcularRutas(); // Asegura que las rutas registradas sean las menores
+        ArrayList<int[]> excentricidades = new ArrayList<>(); // Guarda los datos de excentricidades de cada vértice y
+        // la ciudad de la que se habla
+        int excentricidad_mínima = 1000000;
+
+        // Compara los datos en distancias para cada vértice para conocer sus
+        // excentricidades
+        for (int i = 0; i < grafo_a_usar.getDistancias().length; i++) {
+            int[] datos_excentricidad = new int[3];
+            for (int j = 0; j < grafo_a_usar.getDistancias()[i].length; j++) {
+                int value = grafo_a_usar.getDistancias()[i][j]; // Valor actual en la posición de matriz
+                if (value < excentricidad_mínima && value != 0) {
+                    excentricidad_mínima = value; // Actualizamos el valor del menor si encontramos un número más
+                    // pequeño
+                    datos_excentricidad[0] = excentricidad_mínima; // Dato mínimo obtenido
+                    datos_excentricidad[1] = i; // Ciudad de donde va
+                    datos_excentricidad[2] = j; // Ciudad a donde llega
+                }
+            }
+            excentricidades.add(datos_excentricidad);
+            excentricidad_mínima = 1000000;
+        }
+
+        ArrayList<int[]> excentricidad_centro = new ArrayList<>(); // Guarda todas las ciudades con un valor igual de
+        // excentricidad, relacionadas al centro
+        for (int[] value : excentricidades) {
+            if (excentricidad_centro.isEmpty()) {
+                excentricidad_centro.add(value); // Agrega un dato al inicio del ciclo
+            } else {
+                for (int[] is : excentricidad_centro) { // Revisa cada dato dento del array de excentricidades
+                    // consideradas
+                    if (value[0] <= is[0]) { // Si los datos son iguales se guardan ambos
+                        if (value[0] < is[0]) { // Si el valor de 'value' es menor, se elimina el actual guardado
+                            excentricidad_centro.remove(is);
+                        }
+                        excentricidad_centro.add(value); // Actualizamos el valor del menor si encontramos un número más
+                        // pequeño
+                        break;
+                    }
+                }
+            }
+        }
+
+        System.out.print("Ciudad(es) en el centro del grafo: ");
+        ArrayList<String> central_cities = new ArrayList<>();
+        for (int[] is : excentricidad_centro) { // Imprime el nombre de cada ciudad céntrica
+            System.out.print(readFile.resultList.get(is[1]));
+            central_cities.add(readFile.resultList.get(is[1])); // Guarda el nombre en array para pruebas
+            if (excentricidad_centro.indexOf(is) != excentricidad_centro.size() - 1) { // añade una coma entre ciudades,
+                // sin hacerlo en la última
+                System.out.print(", ");
+            }
+
+        }
+        return central_cities;
     }
 
     /**
@@ -205,7 +205,7 @@ public class Calculos {
      * @param ciudadOrigen
      * @return
      */
-    private FloydWarshall encontrar_grafo_a_utilizar(String ciudadOrigen) {
+    public FloydWarshall encontrar_grafo_a_utilizar(String ciudadOrigen) {
         String clima = "";
         FloydWarshall temporalGrafo = new FloydWarshall(null, null, 0);
 
@@ -227,6 +227,17 @@ public class Calculos {
 
         temporalGrafo.CalcularRutas(); // Assegura que las rutas dadas son mínimas
         return temporalGrafo;
+    }
+
+    public void Ciudades_disponibles(){
+        ArrayList<String> climas = new ArrayList<>();
+        climas.add("Normal");
+        climas.add("lluvia");
+        climas.add("nieve");
+        climas.add("tormenta");
+        System.out.println("\nLas cuidades disponibles son:"+readFile.resultList);
+        System.out.println("Los climas disponibles son:"+ climas);
+
     }
 
 }
