@@ -30,4 +30,16 @@ public class Test_Calculos {
                 assertEquals(30, c.grafoNieve.getDistancias()[1][3]);
                 assertEquals(40, c.grafoTormenta.getDistancias()[1][3]);
         }
+
+        @Test
+        public void Mostrar_Ruta() {
+                c.mostrar_ruta("BuenosAires", "Quito");
+                assertEquals(10, c.grafoNormal.getDistancias()[2][3]);
+        }
+        @Test
+        public void cambiar_clima() {
+                c.Cambiar_clima("Lima",  "lluvia");
+                assertEquals(10, c.grafoNormal.getDistancias()[2][3]);
+
+        }
 }
