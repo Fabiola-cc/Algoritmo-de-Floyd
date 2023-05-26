@@ -1,3 +1,11 @@
+/**
+ * @author
+ * Maria José Villafuerte 22129
+ * Fabiola Contreras 22787
+ * @category Ejercicio #3
+ * Propósito: Crear un programa que de las mejores direcciones con un grado de Floyd
+ * @date 26/05/2023
+ */
 /*
  * Clase para mantener el control de los climas en las diversas ciudades dadas
  */
