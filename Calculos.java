@@ -229,6 +229,11 @@ public class Calculos {
         return temporalGrafo;
     }
 
+
+    /**
+     * Le indica al usuario las ciudades y climas que puede utilizar
+     * @return
+     */
     public void Ciudades_disponibles(){
         ArrayList<String> climas = new ArrayList<>();
         climas.add("Normal");
@@ -237,7 +242,6 @@ public class Calculos {
         climas.add("tormenta");
         System.out.println("\nLas cuidades disponibles son:"+readFile.resultList);
         System.out.println("Los climas disponibles son:"+ climas);
-
     }
 
 }
